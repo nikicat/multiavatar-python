@@ -7,12 +7,10 @@
 # homepage  https://multiavatar.com
 
 
-def multiavatar (string, sansEnv, ver):
+def multiavatar(string, sansEnv, ver):
     string = str(string)
 
-    # 
     # Make final SVG code
-    # 
     def getFinal(part, partV, theme):
         # print(part, partV, theme)
 
@@ -20,7 +18,7 @@ def multiavatar (string, sansEnv, ver):
         svgString = sP[partV][part]
         # print(colors, svgString)
 
-        regex = "\#(.*?)\;"
+        regex = "#(.*?);"
         result = re.findall(regex, svgString)
         # print(result)
 
@@ -32,7 +30,7 @@ def multiavatar (string, sansEnv, ver):
 
         resultFinal = svgString
 
-        if result != None:
+        if result is not None:
             i = 0
             while i < len(result):
                 # print('replace', result[i], colors[i])
@@ -42,10 +40,9 @@ def multiavatar (string, sansEnv, ver):
         # print(resultFinal)
         return resultFinal
 
-
-    # 
+    #
     # Color themes
-    # 
+    #
     themes = {
         # Robo
         "00": {
@@ -467,7 +464,7 @@ def multiavatar (string, sansEnv, ver):
                 "top": ["#004E4C", "#004E4C", "#004E4C", "#004E4C", "#004E4C", "#004E4C", "#004E4C", "#004E4C", "#004E4C", "none", "none", "none", "none", "none", "none", "none", "none"]
             }
         },
-        
+
         # Meta
         "15": {
             "A": {
@@ -499,7 +496,6 @@ def multiavatar (string, sansEnv, ver):
 
     # Test
     # print(themes["13"]["B"]["env"][0])
-    
 
     # 
     # SVG shapes
@@ -511,7 +507,6 @@ def multiavatar (string, sansEnv, ver):
     env = '<path d="M33.83,33.83a115.5,115.5,0,1,1,0,163.34,115.49,115.49,0,0,1,0-163.34Z" style="fill:#01;"/>'
     head = '<path d="m115.5 51.75a63.75 63.75 0 0 0-10.5 126.63v14.09a115.5 115.5 0 0 0-53.729 19.027 115.5 115.5 0 0 0 128.46 0 115.5 115.5 0 0 0-53.729-19.029v-14.084a63.75 63.75 0 0 0 53.25-62.881 63.75 63.75 0 0 0-63.65-63.75 63.75 63.75 0 0 0-0.09961 0z" style="fill:#000;"/>'
     stro = 'stroke-linecap:round;stroke-linejoin:round;stroke-width:'
-    
     from collections import defaultdict
     sP = defaultdict(dict)
 
@@ -660,10 +655,10 @@ def multiavatar (string, sansEnv, ver):
     sha256Hash = sha256(string.encode('utf-8')).hexdigest()
 
     import re
-    sha256Numbers = re.sub('\D', '', sha256Hash)
+    sha256Numbers = re.sub(r'\D', '', sha256Hash)
 
     hash = sha256Numbers[0:12]
-    
+
     # Test
     # return(hash[0])
 
@@ -708,7 +703,7 @@ def multiavatar (string, sansEnv, ver):
 
     p['top'] = hash[10] + hash[11];
     p['top'] = str(round((47/100)*int(p['top'])))
-    
+
     # p['top'] = '25'
 
 
@@ -735,7 +730,6 @@ def multiavatar (string, sansEnv, ver):
     # Test
     # return(p)
 
-
     # Get the SVG code for each part
     final = defaultdict(dict)
 
@@ -744,7 +738,6 @@ def multiavatar (string, sansEnv, ver):
         theme = p[part][2:3]
         # print(part, partV, theme)
         # return
-        
         if ver != None:
             partV = ver["part"]
             theme = ver["theme"]
@@ -755,10 +748,8 @@ def multiavatar (string, sansEnv, ver):
 
         final[part] = getFinal(part, partV, theme)
         # print(final[part])
-        
 
     # Without 'env'
     if sansEnv != None:
         final['env'] = ''
-    
     return(svgStart + final['env'] + final['head'] + final['clo'] + final['top']+ final['eyes'] + final['mouth'] + svgEnd)
